@@ -29,7 +29,7 @@ pub fn thread(
                 if let Some(_fuse) = std::mem::take(&mut *fuse.lock().unwrap()) {
                     _=_fuse.light(());
 
-                    thread::sleep(Duration::from_nanos(2_000_000_000/args.framerate as u64)); //wait 2 frames for rendering thread to close
+                    thread::sleep(Duration::from_nanos(1_000_000_000/args.framerate as u64)); //wait 2 frames for rendering thread to close
 
                     let mut stdoutl = std::io::stdout().lock();
                     let playfield = &mut objects.lock().unwrap()[0];

@@ -91,10 +91,11 @@ impl RenderableObject {
                             buf.write_all(&[0xE2, 0x96, 0x88]).unwrap(); //unicode of █
                         }
                     } else if col==2 { //gray
-                        execute!(buf, SetForegroundColor(Color::Grey));
+                        execute!(buf, SetForegroundColor(Color::DarkGrey));
                         for _ in 0..self.scale.0 {
                             buf.write_all(&[0xE2, 0x96, 0x88]).unwrap(); //unicode of █
                         }
+                        execute!(buf, SetForegroundColor(Color::Reset));
                     } else if col >= 0x20 { //ASCII
                         for _ in 0..self.scale.0 {
                             write!(buf, "{}", col as char).unwrap();

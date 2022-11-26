@@ -26,19 +26,38 @@ pub fn thread(
             execute!(io::stdout().lock(), cursor::MoveUp(1)).unwrap();
             {
                 let mut stdoutl = io::stdout().lock();
+                let cblock = &mut current_block.lock().unwrap();
                 
             // Debug text
                 if args.debug {
-                    objects.lock().unwrap()[1].shape[0] = current_block.lock().unwrap().obj.pos[0].to_string().bytes().collect();
-                    objects.lock().unwrap()[1].shape[1] = current_block.lock().unwrap().obj.pos[1].to_string().bytes().collect();
+                    objects.lock().unwrap()[1].shape[0] = cblock.obj.pos[0].to_string().bytes().collect();
+                    objects.lock().unwrap()[1].shape[1] = cblock.obj.pos[1].to_string().bytes().collect();
                 }
 
             // Call rendering functions
-                for obj in objects.lock().unwrap().iter() {
+                for obj in objects.lock().unwrap().iter() { //playfield && text
                     obj.render(&mut stdoutl);
                 }
                 
-                current_block.lock().unwrap().obj.render(&mut stdoutl);
+                // Ghost piece
+                if !args.disable_ghost {
+                    let old_pos = cblock.obj.pos;
+                    let old_shape = cblock.obj.shape.clone();
+                    
+                    while cblock.mov(0, 1, &objects.lock().unwrap()[0]) == crate::CollisionResult::NoCollision {}
+
+                    for row in cblock.obj.shape.iter_mut() {
+                        for col in row {
+                            if *col != 0 {*col = 2;}
+                        }
+                    }
+
+                    cblock.obj.render(&mut stdoutl);
+                    cblock.obj.pos = old_pos;
+                    cblock.obj.shape = old_shape;
+                }
+
+                cblock.obj.render(&mut stdoutl);
                 held_block.lock().unwrap().obj.render(&mut stdoutl);
                 held.render(&mut stdoutl);
 
