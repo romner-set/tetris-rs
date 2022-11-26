@@ -154,7 +154,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         (Arc::new(Mutex::new(Some(fuse))), bomb)
     };
 
-    let offset = 2+8*args.debug as isize; //x-axis offset of playfield & blocks
+    let offset = 3+7*args.debug as isize; //x-axis offset of playfield & blocks
     let block_defs = Arc::new([ //define blocks
         Block::new(vec![
             vec![0,0,0,0],
@@ -300,7 +300,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     if let Some(_fuse) = std::mem::take(&mut *fuse.lock().unwrap()) { //if closed manually instead of CollisionResult::GameOver
         let fire = _fuse.light(());                                       //send close signal
         while !fire.extinguished() {thread::sleep(Duration::from_millis(1))} //wait until all threads are closed
-    } else {execute!(io::stdout().lock(), cursor::MoveDown(2), Clear(ClearType::FromCursorDown)).unwrap();}
+    } else {execute!(io::stdout().lock(), cursor::MoveDown(2), Clear(ClearType::FromCursorDown))?;}
 
     disable_raw_mode()?;
     execute!(io::stdout(), DisableMouseCapture, cursor::Show)?;
