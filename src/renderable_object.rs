@@ -1,5 +1,5 @@
 use std::{collections::VecDeque, io::Write};
-use crossterm::{cursor, execute};
+use crossterm::{cursor, execute, style::{SetForegroundColor, Color}};
 
 use crate::CollisionResult;
 
@@ -86,11 +86,16 @@ impl RenderableObject {
             for _ in 0..self.scale.1 {
                 if self.is_bordered {buf.write_all(&[0xE2, 0x94, 0x82]).unwrap();} //unicode encoding of │ - left border
                 for &col in row.iter() {
-                    if col==1 {
+                    if col==1 { //white
                         for _ in 0..self.scale.0 {
                             buf.write_all(&[0xE2, 0x96, 0x88]).unwrap(); //unicode of █
                         }
-                    } else if col >= 0x20 {
+                    } else if col==2 { //gray
+                        execute!(buf, SetForegroundColor(Color::Grey));
+                        for _ in 0..self.scale.0 {
+                            buf.write_all(&[0xE2, 0x96, 0x88]).unwrap(); //unicode of █
+                        }
+                    } else if col >= 0x20 { //ASCII
                         for _ in 0..self.scale.0 {
                             write!(buf, "{}", col as char).unwrap();
                         }
