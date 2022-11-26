@@ -1,6 +1,6 @@
 # tetris-rs
 A (hopefully) cross-platform Tetris clone for the CLI.  
-[preview](preview.gif)
+![preview](preview.gif)
 
 ## Features
 - Standard Tetris stuff, e.g. 7 pieces, piece holding, ghost pieces, etc.
