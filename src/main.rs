@@ -20,7 +20,7 @@ pub struct Args {
     #[arg(short, long, default_value_t = 15, help = "Framerate at which the game is rendered.")]
     framerate: u8,
 
-    #[arg(short, long, default_value_t = String::from("ASQFWR "), help = "Controls, in the format <LEFT><RIGHT><ROTATE_LEFT><ROTATE_RIGHT><HOLD><SOFT_DROP><HARD_DROP>.")]
+    #[arg(short, long, default_value_t = String::from("ADQEWS "), help = "Controls, in the format <LEFT><RIGHT><ROTATE_LEFT><ROTATE_RIGHT><HOLD><SOFT_DROP><HARD_DROP>.")]
     controls: String,
 
     #[arg(short, long, default_value_t = 1., help = "Multiplicative gravity strength modifier. Accepts decimals, non-positive values turn gravity off.")]
